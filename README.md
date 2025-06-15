@@ -52,3 +52,109 @@ Our project aims to create meaningful interactions in various settings:
    ```sh
    python -m venv venv
    ```
+
+3. **Activate the virtual environment**:
+   - On Windows:
+     ```sh
+     .\venv\Scripts\activate
+     ```
+   - On macOS/Linux:
+     ```sh
+     source venv/bin/activate
+     ```
+
+4. **Install dependencies**:
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+## 🎮 Usage with Dataset
+
+### 1. Dataset Structure
+The project uses the `svla_so101_pickplace` dataset format. Your recordings will be saved in the following structure:
+```
+SenseToGive/
+├── videos/
+│   └── chunk-000/
+│       ├── up/
+│       │   └── episode_000001.mp4
+│       └── side/
+│           └── episode_000001.mp4
+├── data/
+│   └── chunk-000/
+│       └── episode_000001.parquet
+└── meta/
+    └── info.json
+```
+
+### 2. Running the Hand Trigger
+1. **Start the script**:
+   ```sh
+   python hand_trigger.py
+   ```
+
+2. **Controls**:
+   - Press `r` to start/stop recording an episode
+   - Press `q` to quit the application
+
+3. **Recording Process**:
+   - When recording starts, the script will:
+     - Create video files in `videos/chunk-000/{up,side}/`
+     - Save data files in `data/chunk-000/`
+     - Update metadata in `meta/info.json`
+
+4. **Data Format**:
+   - **Videos**: MP4 format, 640x480 resolution, 30fps
+   - **Parquet Files**: Include columns:
+     - `frame_index`: Frame number in the episode
+     - `episode_index`: Episode number
+     - `timestamp`: Time since episode start
+     - `action`: Robot state values
+     - `observation.state`: Current robot state
+     - `index`: Frame index
+     - `task_index`: Task identifier
+
+### 3. Using Recorded Data
+1. **Viewing Episodes**:
+   - Videos are saved in standard MP4 format
+   - Use any video player to view recordings
+   - Check `meta/info.json` for episode details
+
+2. **Analyzing Data**:
+   - Use pandas to read parquet files:
+     ```python
+     import pandas as pd
+     df = pd.read_parquet('data/chunk-000/episode_000001.parquet')
+     ```
+
+3. **Dataset Integration**:
+   - Recorded data follows the `svla_so101_pickplace` format
+   - Compatible with existing dataset tools and analysis scripts
+   - Can be used for training or testing machine learning models
+
+## 🔧 Troubleshooting
+
+- **Webcam Issues**: Ensure your webcam is connected and recognized by your system
+- **Python Version**: Use Python 3.10 or 3.11. Python 3.13 is not supported
+- **Dependencies**: If you encounter issues, try reinstalling the dependencies:
+  ```sh
+  pip install --upgrade pip setuptools wheel
+  pip install -r requirements.txt
+  ```
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [svla_so101_pickplace](https://github.com/lerobot/svla_so101_pickplace) for the dataset structure and format
+- The LeRobot Hackathon team for their support and guidance
+
+## 📞 Contact
+
+For questions or support, please open an issue in this repository.
